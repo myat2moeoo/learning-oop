@@ -10,20 +10,34 @@ class User {
     }
 
     public function borrow(Book $book) {
-        $message = $book->borrowBook();
-        if (strpos($message, "borrowed") !== false) {
+        if($book->isAvailable()){
+            $book->borrowBook();
             $this->borrowedBooks[] = $book;
+            return "You borrowed '{$book->title}'";
+        }else{
+            return "Sorry, '{$book->title}' is not available";
         }
-        return $message;
     }
 
     public function returnBook(Book $book) {
-        $message = $book->returnBook();
-        foreach ($this->borrowedBooks as $index => $b) {
-            if ($b === $book) {
+        $book->returnBook();
+
+        foreach($this->borrowedBooks as $index => $b){
+            if($b === $book){
                 unset($this->borrowedBooks[$index]);
             }
         }
-        return $message;
+        $this->borrowedBooks = array_values($this->borrowedBooks);
+
+        return "You returned '{$book->title}'";
+    }
+    public function listBorrowed(){
+        if (empty($this->borrowedBooks)){
+            echo "No borrowed books.<br>";
+            return;
+        }
+        foreach($this->borrowedBooks as $b){
+            echo $b->title . " by " . $b->author . "<br>";
+        }
     }
 }

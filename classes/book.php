@@ -1,25 +1,29 @@
 <?php
-class Book {
+class Book
+{
     public $title;
     public $author;
     private $isAvailable = true;
 
-    public function __construct($title, $author) {
+    public function __construct($title, $author)
+    {
         $this->title = $title;
         $this->author = $author;
     }
-
-    public function borrowBook() {
+    public function borrowBook()
+    {
         if ($this->isAvailable) {
             $this->isAvailable = false;
-            return "You borrowed '{$this->title}'";
+            return true;
         } else {
-            return "Sorry, '{$this->title}' is not available.";
+            return false;
         }
     }
-
-    public function returnBook() {
+    public function returnBook()
+    {
         $this->isAvailable = true;
-        return "You returned '{$this->title}'";
+    }
+    public function isAvailable(){
+        return $this->isAvailable;
     }
 }
